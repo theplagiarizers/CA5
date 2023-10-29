@@ -3,16 +3,21 @@
 //Objective: Create and upload the docker image of the web service by using the jenkinsfile
 // stored in your branch.
 pipeline {
+    environment {
+        registry = "theplagiarizers/ca5-web"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
     agent any
 
     stages {
-        stage('Build') {
-            steps {
-                echo 'Switching to web folder'
-                sh 'cd web'
-                echo 'Building the docker image'
-                sh 'docker build . --file Dockerfile --tag theplagiarizers/ca4-web:latest'
-                echo 'Pushing the docker image to docker hub'
+        stage('Building our image') {
+            steps{
+                script {
+                    echo 'Switching to web folder'
+                    sh 'cd web'
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
     }
