@@ -19,14 +19,32 @@ pipeline {
                 }
             }
         }
-        stage('Building our image') {
-            steps{
+    stage('Building our image') {
+        steps {
+            echo 'Switching to web folder'
+            dir('web') {
+                sh 'ls'
+                sh 'pwd'
+                
                 script {
-                    echo 'Switching to web folder'
-                    sh 'cd web'
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
+        }
+    }
+    stage('Deploying image to dockerhub') {
+        steps {
+            script {
+                docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                }
+            }
+        }
+    }
+    }
+    stage('Remove Unused docker images') {
+        steps {
+            sh 'docker rmi $(docker images -f "dangling=true" -q)'
         }
     }
 }
