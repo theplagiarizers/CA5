@@ -41,10 +41,10 @@ pipeline {
             }
         }
     }
-    }
     stage('Remove Unused docker images') {
         steps {
             sh 'docker rmi $(docker images -f "dangling=true" -q)'
         }
+    }
     }
 }
