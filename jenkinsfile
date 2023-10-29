@@ -7,8 +7,6 @@ pipeline {
 
     stages {
         stage('Build') {
-            // Checkout code from the repository
-            checkout scm
             
             // Move to web folder 
             dir('web') {
