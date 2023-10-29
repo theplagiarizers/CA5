@@ -1,24 +1,33 @@
 pipeline {
     agent any
 
-
-    tools {dockerTool  "mydocker" } 
-    stages {
+       environment {
+        DOCKER_COMPOSE_VERSION = '1.29.2'
+        DOCKER_COMPOSE_URL = "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-Linux-x86_64"
+        COMPOSE_FILE = 'docker-compose.yml'
+    }
+    
+   
       
-        stage("Initialize") {
+        
+
+    stages {
+
+        stage('Initialize') {
             steps {
                 script {
-                    def dockerHome = tool 'mydocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                    sh "curl -L ${DOCKER_COMPOSE_URL} -o docker-compose"
+                    sh 'chmod +x docker-compose'
+                    sh './docker-compose --version'
                 }
             }
         }
-        
+
         stage('Run Services') {
             steps {
 
                 // Deploy your application using Docker Compose
-                sh 'docker-compose up'
+                sh './docker-compose up'
                 
                 
             }
@@ -28,9 +37,9 @@ pipeline {
 
                 
                     // Deploy your application using Docker Compose
-                    sh 'docker-compose down'
+                    sh './docker-compose down'
                 
-                    sh 'docker-compose ps'
+                    sh './docker-compose ps'
                    
                 }
 
