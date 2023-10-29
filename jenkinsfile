@@ -10,8 +10,9 @@ pipeline {
             steps {
                 echo 'Switching to web folder'
                 sh 'cd web'
-                echo 'Building the docker  image'
+                echo 'Building the docker image'
                 sh 'docker build . --file Dockerfile --tag theplagiarizers/ca4-web:latest'
+                echo 'Pushing the docker image to docker hub'
             }
         }
     }
