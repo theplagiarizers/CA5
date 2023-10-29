@@ -17,10 +17,10 @@ pipeline {
         stage('Run Services') {
             steps {
 
-            
+                sh 'docker-compose version'
                 // Deploy your application using Docker Compose
-                sh 'docker compose up'
-                sh 'docker compose ps'
+                sh 'docker-compose up'
+                sh 'docker-compose ps'
             }
         }
         stage('Stop Services'){
@@ -28,8 +28,8 @@ pipeline {
 
                 
                     // Deploy your application using Docker Compose
-                    sh 'docker compose down'
-                    sh 'docker compose ps'
+                    sh 'docker-compose down'
+                    sh 'docker-compose ps'
                    
                 }
 
