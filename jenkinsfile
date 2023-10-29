@@ -20,7 +20,19 @@ pipeline {
             
                 // Deploy your application using Docker Compose
                 sh 'docker compose up -d'
+                sh 'docker compose ps'
             }
+
+        stage('Stop Services')
+            steps {
+
+                
+                    // Deploy your application using Docker Compose
+                    sh 'docker compose down'
+                    sh 'docker compose ps'
+                   
+                }
+
         }
     }
 }
