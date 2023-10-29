@@ -23,6 +23,8 @@ pipeline {
                 sh 'docker-compose version'
                 // Deploy your application using Docker Compose
                 sh 'docker compose up'
+                sh 'docker-compose up'
+                
                 
             }
         }
@@ -32,6 +34,8 @@ pipeline {
                 
                     // Deploy your application using Docker Compose
                     sh 'docker compose down'
+                    sh 'docker-compose down'
+                
                     sh 'docker compose ps'
                    
                 }
