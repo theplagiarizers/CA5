@@ -1,1 +1,20 @@
-test
+//This is Jenkins file for Member 2
+//Path: jenkinsfile
+//Objective: Create and upload the docker image of the web service by using the jenkinsfile
+// stored in your branch.
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            // Checkout code from the repository
+            checkout scm
+            
+            // Move to web folder 
+            dir('web') {
+                // Print the current directory
+                sh 'pwd'
+            }
+        }
+    }
+}
