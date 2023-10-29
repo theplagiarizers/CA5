@@ -1,7 +1,0 @@
-CREATE TABLE your_table (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  UserName VARCHAR(255),
-  NOTES VARCHAR(255),
-  email VARCHAR(255),
-  password VARCHAR(255)
-);
