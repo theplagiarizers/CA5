@@ -2,18 +2,8 @@ pipeline {
     agent any
     
     stages {
-        stage('Build') {
-            steps {
-                // Checkout your source code from version control
-                checkout scm
-                
-                // Build your Docker images
-                sh 'docker-compose build'
-            }
-        }
-        
-        
-        stage('Deploy') {
+               
+        stage('Run Services') {
             steps {
                 // Deploy your application using Docker Compose
                 sh 'docker-compose up -d'
