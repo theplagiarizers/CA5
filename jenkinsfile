@@ -19,6 +19,8 @@ pipeline {
 
                 sh 'docker version'
                 sh 'docker info'
+                sh 'docker compose version'
+                sh 'docker-compose version'
                 // Deploy your application using Docker Compose
                 sh 'docker compose up'
                 
