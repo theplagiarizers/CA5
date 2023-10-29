@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    image: theplagiarizers/ca4-web
+    ports:
+      - "8500:8000" #For backend server (express)
+      - "3500:3000" #For frontend
+  db:
+    image: theplagiarizers/ca4-db
+    ports:
+      - "5500:5000" #For MySQL
