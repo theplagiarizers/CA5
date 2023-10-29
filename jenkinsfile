@@ -9,7 +9,7 @@ pipeline {
         dockerImage = ''
     }
     agent any
-
+    tools {dockerTool  "mydocker" } 
     stages {
         stage('Initialize') {
             steps {
@@ -33,17 +33,20 @@ pipeline {
         }
     }
     stage('Deploying image to dockerhub') {
-        steps {
-            script {
-                docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-                }
+    steps {
+        script {
+            sh 'docker images'
+            
+            withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_TOKEN')]) {
+                sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN'
+                sh 'docker push ' + registry + ":$BUILD_NUMBER"
+            }
             }
         }
     }
     stage('Remove Unused docker images') {
         steps {
-            sh 'docker rmi $(docker images -f "dangling=true" -q)'
+            sh 'docker image prune --force'
         }
     }
     }
