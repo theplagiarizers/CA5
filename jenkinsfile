@@ -1,0 +1,53 @@
+//This is Jenkins file for Member 1
+//Path: jenkinsfile
+//Objective: Create and upload the docker image of the db service by using the jenkinsfile
+// stored in your branch.
+pipeline {
+    environment {
+        registry = "theplagiarizers/ca5-db"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
+    agent any
+    tools {dockerTool  "mydocker" } 
+    stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    def dockerHome = tool 'mydocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                }
+            }
+        }
+    stage('Building our image') {
+        steps {
+            echo 'Switching to db folder'
+            dir('db') {
+                sh 'ls'
+                sh 'pwd'
+                
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+    }
+    stage('Deploying image to dockerhub') {
+    steps {
+        script {
+            sh 'docker images'
+            
+            withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_TOKEN')]) {
+                sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN'
+                sh 'docker push ' + registry + ":$BUILD_NUMBER"
+            }
+            }
+        }
+    }
+    stage('Remove Unused docker images') {
+        steps {
+            sh 'docker image prune --force'
+        }
+    }
+    }
+}
