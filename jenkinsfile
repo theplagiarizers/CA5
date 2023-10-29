@@ -7,10 +7,8 @@ pipeline {
 
     stages {
         stage('Build') {
-            
-            // Move to web folder 
-            dir('web') {
-                // Print the current directory
+            steps {
+                echo 'Building..'
                 sh 'pwd'
             }
         }
